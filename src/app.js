@@ -2,6 +2,7 @@ import express, { json } from "express"
 import cookieParser from "cookie-parser";
 import cors from "cors"
 
+
 const app = express();
 
 app.use(cors({
@@ -19,5 +20,5 @@ export default app
 //routes
 import userRouter from './routes/user.routes.js'
 
-app.use('/api/v1/users', userRouter)
+app.use('/api/v1/users', userRouter);
 
