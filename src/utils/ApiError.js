@@ -7,7 +7,7 @@ class ApiError extends Error{
     )
 {
 
-    super(message)
+    super(message)//to acess the class /constructor
         this.message = message,
         this.statuscode= statusCode
         this.errors =errors
@@ -18,7 +18,7 @@ class ApiError extends Error{
     if (stack){
         this.stack = stack
     } else{
-        Error.captureStackTrace(this,this.constructot)
+        Error.captureStackTrace(this,this.constructor)
 
      }
 
