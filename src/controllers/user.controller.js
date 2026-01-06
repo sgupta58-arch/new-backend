@@ -1,6 +1,8 @@
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { User } from "../models/user.models.js";
 import { ApiError } from "../utils/ApiError.js";
+import {uploadOnCloudinary} from "../utils/cloudinary.js"
+import {ApiResonse} from "../utils/ApiResponse.js"
 
 
 const registerUser = asyncHandler(async(req , res )=>{
@@ -19,7 +21,7 @@ const registerUser = asyncHandler(async(req , res )=>{
     
 
     if(
-        [fullname,email,username,password].some((field)=>filed?.trim()=== "")
+        [fullname,email,username,password].some((field)=>field?.trim()=== "")
     ){
         throw new ApiError(400,"All fields are required")
 
@@ -33,10 +35,40 @@ const registerUser = asyncHandler(async(req , res )=>{
         throw new ApiError(409,"User already exists")
     }
 
-    req.files?.avatar.path
+    const avatarLocalPath = req.files?.avatar[0].path;
+    const coverImagePath = req.files?.coverImage[0].path;
 
+    if(!avatarLocalPath){
+        throw new ApiError(404,"Avatar is required")
+    }
 
+    const avatar = await uploadOnCloudinary(avatarLocalPath)
+    const coverImage = await uploadOnCloudinary(coverImagePath)
 
+    if(!avatar){
+        throw new ApiError(404,"Avatar is required")
+    }
+
+    User.create({
+        fullname,
+        avatar : avatar.url,
+        coverImage: coverImage?.url || "",
+        password,
+        username: username.toLowercase()
+
+    })
+
+    const createdUser = await User.findById(user._id).select(
+        "-password -refreshToken"
+    )
+
+    if(!createdUser){
+        throw new ApiError(500, "Something went wrong while registereing user")
+    }
+
+    return res.status(201).json(
+        new ApiResonse (200,createdUser,"User regisered succesfully")
+    )
 
 })
 

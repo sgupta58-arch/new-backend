@@ -7,7 +7,7 @@ import fs from "fs"
         api_secret: process.env.CLOUDINARY_API_SECRET // Click 'View API Keys' above to copy your API secret
     });
 
-    const uploadFileonCloudinary = async (localFilepath)=>{
+    const uploadOnCloudinary = async (localFilepath)=>{
         try {
             if (!localFilepath) return "file not found"
 
@@ -23,4 +23,7 @@ import fs from "fs"
         }
     }
 
-    export {uploadFileonCloudinary};
+    export {uploadOnCloudinary};
+
+
+    
