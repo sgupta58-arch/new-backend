@@ -82,4 +82,21 @@ if(req.files && Array.isArray(req.files.coverImage) && req.files.coverImage.leng
 })
 
 
+const loginUser = asyncHandler(async(req,res )=>{
+//get username or email 
+//validate password
+//if not validated return error 
+////if validated get cookies and authenciation to remember 
+//redirect to the web page
+
+
+
+    const {email, username,password} = req.body
+
+    if(!username || !email){
+        throw new ApiError(400,"Username or password is required")
+    }
+})
+
+
 export {registerUser}
